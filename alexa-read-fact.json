@@ -1,0 +1,56 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "Demonstrate a basic fact skill built with the ASK NodeJS SDK",
+	"Resources": {
+		"alexaskillskitnodejsfactskill": {
+			"Type": "AWS::Lambda::Function",
+			"Properties": {
+				"Code": {
+					"S3Bucket": "awsserverlessrepo-changesets-plntc6bfnfj",
+					"S3Key": "232357167871-947732d3-cec1-4e80-9596-37206a195f9d"
+				},
+				"Description": "Demonstrate a basic fact skill built with the ASK NodeJS SDK",
+				"Tags": [{
+					"Value": "SAM",
+					"Key": "lambda:createdBy"
+				}],
+				"MemorySize": 128,
+				"Handler": "index.handler",
+				"Role": {
+					"Fn::GetAtt": ["alexaskillskitnodejsfactskillRole", "Arn"]
+				},
+				"Timeout": 7,
+				"Runtime": "nodejs8.10"
+			}
+		},
+		"alexaskillskitnodejsfactskillRole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"],
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [{
+						"Action": ["sts:AssumeRole"],
+						"Effect": "Allow",
+						"Principal": {
+							"Service": ["lambda.amazonaws.com"]
+						}
+					}]
+				}
+			}
+		},
+		"alexaskillskitnodejsfactskillAlexaTriggerPermission": {
+			"Type": "AWS::Lambda::Permission",
+			"Properties": {
+				"Action": "lambda:invokeFunction",
+				"FunctionName": {
+					"Ref": "alexaskillskitnodejsfactskill"
+				},
+				"Principal": "alexa-appkit.amazon.com"
+			}
+		}
+	},
+	"Metadata": {
+		"Name": "alexa-skills-kit-nodejs-factskill"
+	}
+}
